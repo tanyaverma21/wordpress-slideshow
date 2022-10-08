@@ -9,6 +9,7 @@ const entryPoints = {
   // 'app' is the output name, people commonly use 'bundle'
   // you can have more than 1 entry point
   'bundle': jsPath + '/index.js',
+  'admin': jsPath + '/admin.js',
 };
 
 module.exports = {

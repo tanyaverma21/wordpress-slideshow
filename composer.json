@@ -17,5 +17,14 @@
             "phpmd_exclude_dir":"dist,*/vendor,node_modules,bin",
             "phpcs_exclude_dir":"dist,*/vendor,node_modules,bin"
         }
+    },
+    "autoload": {
+        "files": [
+            "inc/setup.php"
+        ],
+        "psr-4": {
+            "WP\\SlideShow\\": "inc/"
+        },
+        "classmap": [ "inc/" ]
     }
 }
