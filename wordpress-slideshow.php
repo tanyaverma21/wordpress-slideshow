@@ -1,6 +1,6 @@
 <?php
 /**
- * Plugin Name:     Wordpress Slideshow
+ * Plugin Name:     WordPress Slideshow
  * Plugin URI:      https://github.com/tanyaverma21/wordpress-slideshow/
  * Description:     A plugin to showcase slideshow of uploaded images.
  * Author:          TANYA VERMA
