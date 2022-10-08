@@ -1,0 +1,21 @@
+{
+    "name": "tanyaverma/wordpress-slideshow",
+    "description": "A plugin to showcase slideshow of uploaded images.",
+    "type": "composer-plugin",
+    "authors": [
+        {
+            "name": "Tanya Verma",
+            "email": "tanya.verma@infobeans.com"
+        }
+    ],
+    "require": {},
+    "require-dev": {
+        "bjornjohansen/wp-pre-commit-hook": "*"
+    },
+    "config": {
+        "rule_set_info": {
+            "phpmd_exclude_dir":"dist,*/vendor,node_modules,bin",
+            "phpcs_exclude_dir":"dist,*/vendor,node_modules,bin"
+        }
+    }
+}
