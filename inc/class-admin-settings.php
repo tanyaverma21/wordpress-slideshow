@@ -32,7 +32,7 @@ class Admin_Settings {
 		wp_enqueue_script(
 			'admin-script',
 			plugins_url( "{$plugin_name}/dist/scripts/admin.js", $plugin_dir ),
-			array( 'wp-i18n', 'jquery' ),
+			array( 'wp-i18n', 'jquery', 'jquery-ui-script' ),
 			filemtime( WP_SLIDESHOW_DIR . '/dist/scripts/admin.js' ),
 			true
 		);
@@ -47,18 +47,18 @@ class Admin_Settings {
 		// external ui script.
 		wp_enqueue_script(
 			'jquery-ui-script',
-			plugins_url( "{$plugin_name}/lib/jquery-ui.js", $plugin_dir ),
+			plugins_url( "{$plugin_name}/lib/jqueryui/jquery-ui.js", $plugin_dir ),
 			array( 'wp-i18n', 'jquery' ),
-			filemtime( WP_SLIDESHOW_DIR . '/lib/jquery-ui.js' ),
+			filemtime( WP_SLIDESHOW_DIR . '/lib/jqueryui/jquery-ui.js' ),
 			true
 		);
 
 		// external ui stylesheet.
 		wp_enqueue_style(
 			'jquery-ui-styles',
-			plugins_url( "{$plugin_name}/lib/jquery-ui.css", $plugin_dir ),
+			plugins_url( "{$plugin_name}/lib/jqueryui/jquery-ui.css", $plugin_dir ),
 			array(),
-			filemtime( WP_SLIDESHOW_DIR . '/lib/jquery-ui.css' )
+			filemtime( WP_SLIDESHOW_DIR . '/lib/jqueryui/jquery-ui.css' )
 		);
 	}
 

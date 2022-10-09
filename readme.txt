@@ -9,17 +9,26 @@ Stable tag: 0.1.0
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
-Here is a short description of the plugin.  This should be no more than 150 characters.  No markup here.
+A plugin to allow editor to create and manage slideshow.
 
 == Description ==
 
-This is the long description.  No limit, and you can use Markdown (as well as in the following sections).
+A plugin to allow editor to create and manage slideshow.
 
 == Installation ==
 
 1. Upload `wordpress-slideshow` directory to the `/wp-content/plugins/` directory
 2. Activate the plugin through the 'Plugins' menu in WordPress.
-3. Run 'yarn install' followed by 'yarn build:prod:all' inside plugins/wordpress-slideshow/ directory to install required webpack modules.
+3. Run **yarn install** followed by 'yarn build:prod:all' inside plugins/wordpress-slideshow/ directory to install required webpack modules.
+4. Run **composer update** inside plugins/wordpress-slideshow/ directory to install composer dependencies.
+
+== Working ==
+
+1. After the plugin activation in WP Admin, a menu page will be created named as, 'Slideshow'.
+2. On that page, various settings related to Slideshow Configurations are given.
+3. After configurations, add/edit any Page in **Pages**.
+4. Add shortcode [wp_slideshow] on that page.
+5. View the page on the frontend.
 
 == Changelog ==
 
@@ -27,8 +36,6 @@ This is the long description.  No limit, and you can use Markdown (as well as in
 * Latest Changes
 
 == Arbitrary section ==
-
-Ordered list:
 
 1. Settings Page in WordPress Admin Area.
 2. Upload Multiple Image Interface.
