@@ -72,17 +72,21 @@ class WP_Slideshow_Shortcode {
 		ob_start(); ?>
 		<div class="slideshow-wrapper">
 			<h2><?php echo esc_html( $slideshow_title ); ?></h2>
-			<div class="slideshow">
 			<?php
 			if ( ! empty( $slideshow_images ) ) {
+				?>
+				<div class="slideshow">
+				<?php
 				foreach ( $slideshow_images as $slideshow_image ) {
 					?>
-						<img src="<?php echo esc_url( $slideshow_image ); ?>" />
-											 <?php
+							<img src="<?php echo esc_url( $slideshow_image ); ?>" />
+											<?php
 				}
+				?>
+				</div>
+				<?php
 			}
 			?>
-			</div>
 		</div>
 		<?php
 
