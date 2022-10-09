@@ -8,6 +8,7 @@
 namespace WP\SlideShow;
 
 use WP\SlideShow\Admin_Settings;
+use WP\SlideShow\WP_Slideshow_Shortcode;
 
 /**
  * Plugin loader.
@@ -16,4 +17,5 @@ use WP\SlideShow\Admin_Settings;
  */
 function setup() {
 	new Admin_Settings();
+	new WP_Slideshow_Shortcode();
 }

@@ -15,46 +15,9 @@ class Admin_Settings {
 	 * Constructor.
 	 */
 	public function __construct() {
-		add_action( 'wp_enqueue_scripts', array( $this, 'enqueue_styles_and_scripts' ) );
 		add_action( 'admin_enqueue_scripts', array( $this, 'enqueue_admin_assets' ), 1 );
 		add_action( 'admin_init', array( $this, 'slideshow_settings_init' ) );
 		add_action( 'admin_menu', array( $this, 'slideshow_options_page' ) );
-	}
-
-	/**
-	 * Enqueue scripts and styles for frontend slideshow functionality.
-	 *
-	 * @return void
-	 */
-	public function enqueue_styles_and_scripts() : void {
-		$plugin_name = basename( WP_SLIDESHOW_DIR );
-		$plugin_dir  = WP_CONTENT_DIR . '/plugins/' . $plugin_name;
-
-		wp_register_script(
-			'slideshow-script',
-			plugins_url( "{$plugin_name}/dist/scripts/bundle.js", $plugin_dir ),
-			array( 'wp-i18n', 'jquery' ),
-			filemtime( WP_SLIDESHOW_DIR . '/dist/scripts/bundle.js' ),
-			true
-		);
-
-		wp_localize_script(
-			'slideshow-script',
-			'ajaxload_params',
-			array(
-				'ajaxurl' => site_url() . '/wp-admin/admin-ajax.php',
-				'nonce'   => wp_create_nonce( 'ajax-load' ),
-			)
-		);
-
-		wp_enqueue_script( 'slideshow-script' );
-
-		wp_enqueue_style(
-			'slideshow-styles',
-			plugins_url( "{$plugin_name}/dist/styles/bundle.css", $plugin_dir ),
-			array(),
-			filemtime( WP_SLIDESHOW_DIR . '/dist/styles/bundle.css' )
-		);
 	}
 
 	/**
@@ -66,7 +29,7 @@ class Admin_Settings {
 		$plugin_name = basename( WP_SLIDESHOW_DIR );
 		$plugin_dir  = WP_CONTENT_DIR . '/plugins/' . $plugin_name;
 
-		wp_register_script(
+		wp_enqueue_script(
 			'admin-script',
 			plugins_url( "{$plugin_name}/dist/scripts/admin.js", $plugin_dir ),
 			array( 'wp-i18n', 'jquery' ),
@@ -74,13 +37,28 @@ class Admin_Settings {
 			true
 		);
 
-		wp_enqueue_script( 'admin-script' );
-
 		wp_enqueue_style(
 			'admin-styles',
 			plugins_url( "{$plugin_name}/dist/styles/admin.css", $plugin_dir ),
 			array(),
 			filemtime( WP_SLIDESHOW_DIR . '/dist/styles/admin.css' )
+		);
+
+		// external ui script.
+		wp_enqueue_script(
+			'jquery-ui-script',
+			plugins_url( "{$plugin_name}/lib/jquery-ui.js", $plugin_dir ),
+			array( 'wp-i18n', 'jquery' ),
+			filemtime( WP_SLIDESHOW_DIR . '/lib/jquery-ui.js' ),
+			true
+		);
+
+		// external ui stylesheet.
+		wp_enqueue_style(
+			'jquery-ui-styles',
+			plugins_url( "{$plugin_name}/lib/jquery-ui.css", $plugin_dir ),
+			array(),
+			filemtime( WP_SLIDESHOW_DIR . '/lib/jquery-ui.css' )
 		);
 	}
 
@@ -138,9 +116,7 @@ class Admin_Settings {
 		$slideshow_title   = filter_input( INPUT_POST, 'slideshow_title', FILTER_SANITIZE_FULL_SPECIAL_CHARS );
 		$slideshow_options = array();
 		$image_array       = array();
-		$slideshow_values  = get_option( 'slideshow_options' );
-		$slideshow_images  = $slideshow_values['slideshow_images'];
-
+		$slideshow_images  = ! empty( $_POST['existing_images'] ) ? $_POST['existing_images'] : array(); // phpcs:ignore
 		$images_to_delete = ! empty( $_POST['image_ids'] ) ? $_POST['image_ids'] : array(); // phpcs:ignore
 		$files            = ! empty( $_FILES['slideshow_images'] ) ? $_FILES['slideshow_images'] : array(); // phpcs:ignore
 		if ( ! empty( $images_to_delete ) && ! empty( $slideshow_images ) ) {
@@ -220,16 +196,17 @@ class Admin_Settings {
 		?>
 		<input  accept="image/png, image/jpeg, image/jpg" type="file" multiple id="<?php echo esc_attr( $args['label_for'] ); ?>" name="<?php echo esc_attr( $args['label_for'] ); ?>[]">
 
-		<div class="images" id="slides">
+		<ul class="images" id="slides">
 			<?php if ( ! empty( $options['slideshow_images'] ) ) : ?>
 				<?php foreach ( $options['slideshow_images'] as $image ) : ?>
-					<span id="image-slide">
+					<li class="image-slide">
 						<img src="<?php echo esc_url( $image ); ?>" width="100" height="100" class="slides" />
 						<a class="delete-image" href="javascript:void(0)"><span class="dashicons dashicons-dismiss"></span></a>
-					</span>
+						<input type="hidden" class="existing_images" name="existing_images[]" value="<?php echo esc_url( $image ); ?>" />
+					</li>
 				<?php endforeach; ?>
 			<?php endif; ?>
-		</div>
+		</ul>
 			
 		<p class="description">
 			<?php esc_html_e( 'Upload/Select multiple images for your slideshow.', 'wordpress-slideshow' ); ?>

@@ -15,7 +15,7 @@ _(document).ready( function () {
   _('#slideshow_images').on('change', function(e){
     var files = e.target.files.length;
     for (var i=0;i<files;i++) {
-        _('#slides').append("<span id='image-slide'><img class='slides' width='100' height='100' src='"+URL.createObjectURL(e.target.files[i])+"'><a class='delete-image' href='javascript:void(0)'><span class='dashicons dashicons-dismiss'></span></a></span>");
+        _('#slides').append("<li class='image-slide'><img class='slides' width='100' height='100' src='"+URL.createObjectURL(e.target.files[i])+"'><a class='delete-image' href='javascript:void(0)'><span class='dashicons dashicons-dismiss'></span></a></li>");
     }
   });
 
@@ -26,8 +26,14 @@ _(document).ready( function () {
    */ 
   _('a.delete-image').on('click', function() {
     _('<input type="hidden" class="image_ids" name="image_ids[]" value="'+_(this).prev().attr('src')+'" />').insertAfter(_(this));
-    console.log(_(this).prev().attr('src'));
     _(this).prev().remove();
     _(this).remove();
   });
+
+  /**
+   * Adds sortable ui interface.
+   * Handles multiple images sorting.
+   * @since 1.0
+   */ 
+  _('#slides').sortable();
 });

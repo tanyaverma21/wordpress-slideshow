@@ -1,8 +1,9 @@
-div.images {
+ul.images {
   margin-top: 10px;
   width: 100%;
+  display: inline-flex;
 
-  span#image-slide {
+  li.image-slide {
     margin-right: 15px;
     margin-top: 10px;
 
@@ -14,10 +15,6 @@ div.images {
       border-radius: 50%;
       color: red;
       margin-left: -25px;
-    }
-
-    img.slides {
-      width: 11%;
     }
   }
 }

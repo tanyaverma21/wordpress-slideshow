@@ -22,4 +22,10 @@ node_modules/
 *.sql
 *.sqlite
 
-/vendor/
+# ignore vendor files
+/vendor/bin/
+/vendor/bjornjohansen/
+/vendor/dealerdirect/
+/vendor/phpcompatibility/
+/vendor/squizlabs/
+/vendor/wp-coding-standards/
