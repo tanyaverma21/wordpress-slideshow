@@ -1,6 +1,4 @@
 === Wordpress Slideshow ===
-Contributors: (this should be a list of wordpress.org userid's)
-Donate link: https://example.com/
 Tags: comments, spam
 Requires at least: 4.5
 Tested up to: 6.0.2
