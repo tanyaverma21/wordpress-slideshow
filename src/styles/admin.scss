@@ -1,0 +1,23 @@
+div.images {
+  margin-top: 10px;
+  width: 100%;
+
+  span#image-slide {
+    margin-right: 15px;
+    margin-top: 10px;
+
+    a.delete-image {
+      text-decoration: none;
+      position: absolute;
+      margin: 4px;
+      background: #fff;
+      border-radius: 50%;
+      color: red;
+      margin-left: -25px;
+    }
+
+    img.slides {
+      width: 11%;
+    }
+  }
+}

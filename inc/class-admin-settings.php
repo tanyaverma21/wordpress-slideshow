@@ -138,25 +138,34 @@ class Admin_Settings {
 		$slideshow_title   = filter_input( INPUT_POST, 'slideshow_title', FILTER_SANITIZE_FULL_SPECIAL_CHARS );
 		$slideshow_options = array();
 		$image_array       = array();
-		$slideshow_images  = get_option( 'slideshow_options' );
+		$slideshow_values  = get_option( 'slideshow_options' );
+		$slideshow_images  = $slideshow_values['slideshow_images'];
+
+		$images_to_delete = ! empty( $_POST['image_ids'] ) ? $_POST['image_ids'] : array(); // phpcs:ignore
+		$files            = ! empty( $_FILES['slideshow_images'] ) ? $_FILES['slideshow_images'] : array(); // phpcs:ignore
+		if ( ! empty( $images_to_delete ) && ! empty( $slideshow_images ) ) {
+			foreach ( $slideshow_images as $key => $slideshow_image ) {
+				if ( in_array( $slideshow_image, $images_to_delete, true ) ) {
+					unset( $slideshow_images[ $key ] );
+				}
+			}
+		}
+
 		if ( ! empty( $slideshow_title ) ) {
 			$slideshow_options['slideshow_title'] = $slideshow_title;
 		}
 
-        // @codingStandardsIgnoreStart
-		if ( ! empty( $_FILES['slideshow_images']['name'] ) ) {
-			foreach ( $_FILES['slideshow_images']['name'] as $key => $value ) {
-				$uploadfile = $_FILES['slideshow_images']['tmp_name'][ $key ];
+		if ( ! empty( $files['name'] ) ) {
+			foreach ( $files['name'] as $key => $value ) {
+				$uploadfile = $files['tmp_name'][ $key ];
 				if ( ! empty( $uploadfile ) ) {
 					$file = array(
-						'name'     => $_FILES['slideshow_images']['name'][ $key ],
-						'type'     => $_FILES['slideshow_images']['type'][ $key ],
-						'tmp_name' => $_FILES['slideshow_images']['tmp_name'][ $key ],
-						'error'    => $_FILES['slideshow_images']['error'][ $key ],
-						'size'     => $_FILES['slideshow_images']['size'][ $key ],
+						'name'     => $files['name'][ $key ] ?? '',
+						'type'     => $files['type'][ $key ] ?? '',
+						'tmp_name' => $files['tmp_name'][ $key ] ?? '',
+						'error'    => $files['error'][ $key ] ?? '',
+						'size'     => $files['size'][ $key ] ?? '',
 					);
-
-                    // @codingStandardsIgnoreEnd
 
 					$urls          = wp_handle_upload( $file, array( 'test_form' => false ) );
 					$image_array[] = $urls['url'];
@@ -164,7 +173,7 @@ class Admin_Settings {
 			}
 		}
 
-		$slideshow_options['slideshow_images'] = ! empty( $slideshow_images['slideshow_images'] ) ? array_merge( $slideshow_images['slideshow_images'], $image_array ) : $image_array;
+		$slideshow_options['slideshow_images'] = ! empty( $slideshow_images ) ? array_merge( $slideshow_images, $image_array ) : $image_array;
 
 		return $slideshow_options;
 	}
@@ -209,12 +218,15 @@ class Admin_Settings {
 		// Get the value of the setting we've registered with register_setting().
 		$options = get_option( 'slideshow_options' );
 		?>
-		<input required  accept="image/png, image/jpeg, image/jpg" type="file" multiple id="<?php echo esc_attr( $args['label_for'] ); ?>" name="<?php echo esc_attr( $args['label_for'] ); ?>[]">
+		<input  accept="image/png, image/jpeg, image/jpg" type="file" multiple id="<?php echo esc_attr( $args['label_for'] ); ?>" name="<?php echo esc_attr( $args['label_for'] ); ?>[]">
 
 		<div class="images" id="slides">
 			<?php if ( ! empty( $options['slideshow_images'] ) ) : ?>
 				<?php foreach ( $options['slideshow_images'] as $image ) : ?>
-					<img src="<?php echo esc_url( $image ); ?>" width="100" height="100" class="slides"/>
+					<span id="image-slide">
+						<img src="<?php echo esc_url( $image ); ?>" width="100" height="100" class="slides" />
+						<a class="delete-image" href="javascript:void(0)"><span class="dashicons dashicons-dismiss"></span></a>
+					</span>
 				<?php endforeach; ?>
 			<?php endif; ?>
 		</div>
@@ -266,8 +278,6 @@ class Admin_Settings {
 				<?php
 				// output security fields for the registered setting "slideshow".
 				settings_fields( 'slideshow' );
-				// output setting sections and their fields.
-				// (sections are registered for "slideshow", each field is registered to a specific section).
 				?>
 				<?php
 				do_settings_sections( 'slideshow' );
